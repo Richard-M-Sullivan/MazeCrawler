@@ -10,11 +10,13 @@ import ItemDisplay from './components/ItemDisplay';
 
 function App() {
   return (
-    <div className="screen">
+    <div className="screen flexv flexWrap">
 
-      <div>
-        <MoveController />
-        <RoomDisplay />
+      <div className="hud flexv flexSpaceBetween flexScroll">
+        <MoveController className="hasBorder hasBackground makeSquare autoHeight" />
+        <br/>
+        <RoomDisplay className="hasBorder hasBackground makeSquare autoHeight"/>
+        <br/>
         <ItemDisplay />
       </div>
 
