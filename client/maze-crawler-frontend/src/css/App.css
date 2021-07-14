@@ -38,6 +38,10 @@ div {
     
 }
 
+input {
+    color: #ff50ff;
+}
+
 p{
     color:#fc89ef;
 }
@@ -57,9 +61,22 @@ br {
     border-radius: 20px;
 }
 
+.noBorder {
+    border:none;
+}
+
 .hasBackground{
     background-color: #9c00bb43;
     mix-blend-mode:screen;
+}
+
+.noBackground{
+    background-color:transparent;
+}
+
+.hover:hover{
+    background-color: #8f2e7e;
+    
 }
 
 .flexh{
@@ -98,6 +115,14 @@ br {
     width:100%;
 }
 
+.widthAuto{
+    width:auto;
+}
+
+.height100{
+    height:100;
+}
+
 .smallHeight{
     height:60px;
 }
@@ -117,6 +142,10 @@ br {
     float: left;
 
 }
+
+.inline {
+    display:inline;
+}
 .childrenNoGrow * {
     height:auto;
 }
@@ -127,6 +156,10 @@ br {
 
 .padded{
     padding:1%;
+}
+
+.bigFont{
+    font-size:130%;
 }
 
 .screen {
