@@ -51,6 +51,9 @@ br {
     background:none;
 }
 
+form {
+    overflow:hidden;
+}
 .hasBorder {
     border: 10px solid #b641a1;
     border-radius: 20px;
@@ -58,7 +61,7 @@ br {
 
 .hasThinBorder {
     border:4px solid #b641a1;
-    border-radius: 20px;
+    /*border-radius: 20px;*/
 }
 
 .noBorder {
