@@ -15,7 +15,11 @@ export default function Chat(props){
     
     const [chats,setChats] = React.useState([]);
 
-    const addChat = function ({user,content}) {setChatData([...chatData,{user:user,content:content}])};
+    const addChat = function ({user,content}) {
+        if(content != null){
+            setChatData([...chatData,{user:user,content:content}])
+        }
+    };
 
     React.useEffect(()=>{
         setChats(
@@ -44,7 +48,7 @@ export default function Chat(props){
                 </div>
             </div>
             <br />
-            <SubmitBar className="hasBorder hasBackground smallHeight flexh" submitAction={addChat}/>
+            <SubmitBar className="hasBorder hasBackground smallHeight flexh" submitAction={addChat} name="chatSubmit"/>
         </div>
     );
 }

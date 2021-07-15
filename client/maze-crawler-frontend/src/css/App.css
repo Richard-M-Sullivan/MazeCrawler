@@ -65,6 +65,10 @@ br {
     border:none;
 }
 
+.noOutline{
+    outline:none;
+}
+
 .hasBackground{
     background-color: #9c00bb43;
     mix-blend-mode:screen;
