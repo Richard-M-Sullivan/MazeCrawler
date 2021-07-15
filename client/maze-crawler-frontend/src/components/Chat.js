@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactScrollableFeed from 'react-scrollable-feed';
 import SubmitBar from './SubmitBar';
 
 
@@ -25,7 +26,7 @@ export default function Chat(props){
         setChats(
             chatData.map(({user,content},index)=>{
                 return(
-                    < React.Fragment key={index}>
+                    < React.Fragment key={index} >
                         <div className="padded">
                             <b>{`${user}`}</b> <br/> {`~ ${content}`}
                         </div>
@@ -44,7 +45,7 @@ export default function Chat(props){
             <div className="hasBorder hasBackground flexv flexCenter overflowHidden">
                 <h1>Chat</h1>
                 <div className="flexv flexLeft width100 childrenNoGrow flexScroll">
-                    {chats}
+                    <ReactScrollableFeed>{chats}</ReactScrollableFeed>
                 </div>
             </div>
             <br />

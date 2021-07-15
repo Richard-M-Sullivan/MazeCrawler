@@ -1,5 +1,5 @@
 import React from 'react';
-
+import ReactScrollableFeed from 'react-scrollable-feed';
 import SubmitBar from './SubmitBar';
 
 export default function Description(props){
@@ -47,7 +47,7 @@ export default function Description(props){
             <div className="content hasBorder hasBackground flexv flexCenter overflowHidden">
                 <h1>Description</h1>
                 <div className="flexv flexLeft width100 childrenNoGrow flexScroll">
-                    {descriptions}
+                    <ReactScrollableFeed>{descriptions}</ReactScrollableFeed> 
                 </div>
             </div>
             <br />
