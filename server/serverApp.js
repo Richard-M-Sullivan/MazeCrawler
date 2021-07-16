@@ -1,16 +1,27 @@
 
+const Server = require("http");
 const express = require("express");
-const Socketio = require("socket.io");
+const Socket = require("socket.io");
 
-const app = express();
 const port = 5000;
 
-io = Socketio(app.listen(port,()=>{console.log(`express is listening on port ${port}`)}),{});
+const app = express();
+const server = Server.createServer(app);
+
+const io = Socket(server,{
+    cors: {
+    origin: "http://127.0.0.1:3000",
+    methods: ["GET", "POST"]
+  }
+});
+
+server.listen(`${port}`);
 
 io.on("connection",(socket)=>{
     console.log("socket connection established!");
-
 });
 
-
-
+app.get("/",(req,res)=>{
+    res.send("hello world");
+    console.log("hello");
+});

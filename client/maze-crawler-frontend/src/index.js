@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Socket from 'socket.io-client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+let socket = Socket("http://127.0.0.1:5000");
 
 ReactDOM.render(
   <React.StrictMode>
