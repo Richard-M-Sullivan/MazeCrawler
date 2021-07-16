@@ -10,7 +10,7 @@ const server = Server.createServer(app);
 
 const io = Socket(server,{
     cors: {
-    origin: "http://127.0.0.1:3000",
+    origin: "http://192.168.1.245:3000",
     methods: ["GET", "POST"]
   }
 });
