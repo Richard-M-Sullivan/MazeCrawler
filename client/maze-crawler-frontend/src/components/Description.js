@@ -1,4 +1,5 @@
 import React from 'react';
+import socket from '../services/socketService';//grants access to the global socket obj to send and handle messages
 import ReactScrollableFeed from 'react-scrollable-feed';
 import SubmitBar from './SubmitBar';
 
@@ -7,7 +8,7 @@ export default function Description(props){
     const [descriptionData,setDescriptionData] = React.useState([
         {content:`You wake up in a forest. All around you hear the rustling of trees, and up ahead you hear falling water.
         You have a gash in your side and an empty canteen. What do you do, weary traveller?`},
-        {content:"go foreward"},
+        {content:"go forward"},
         {content:`You make your way out of the forest up to the base of a craggy cliffs face. It towers over you, and from it 
         is the waterfall, which flows into a small pool of water. You look left. You look right. The cliffs face extends in 
         both directions as far as you can see, but to the right the forest pulls away from the face to expose a small headstone.`},
@@ -20,12 +21,29 @@ export default function Description(props){
     const [descriptions,setDescriptions] = React.useState([]);
 
     const addDescription = function ({content}) {
+        console.log("adding description");
         if(content != null){
-            setDescriptionData([...descriptionData,{content:content}])
+            setDescriptionData(descriptionData=>[...descriptionData,{content:content}]);
         }
     };
 
+    const submitMessage = function(descriptionobj){
+        console.log(`emitting ${descriptionobj}`);
+        socket.emit("description message",descriptionobj);
+    };
+
     React.useEffect(()=>{
+        console.log("does this get run more than once");
+        
+        socket.on("description message",(message)=>{
+            console.log("description received");
+            addDescription(message);
+        });
+
+    },[])
+
+    React.useEffect(()=>{
+        console.log(descriptionData);
         setDescriptions(
             descriptionData.map(({content},index)=>{
                 return(
@@ -51,7 +69,7 @@ export default function Description(props){
                 </div>
             </div>
             <br />
-            <SubmitBar className="hasBorder hasBackground smallHeight flexh" submitAction={addDescription} name="descriptionSubmit"/>
+            <SubmitBar className="hasBorder hasBackground smallHeight flexh" submitAction={submitMessage} name="descriptionSubmit"/>
         </div>
     );
 }

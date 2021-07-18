@@ -19,22 +19,22 @@ export default function Chat(props){
 
     const addChat = function ({user,content}) {
         if(content != null){
-            console.log("adding chat");
-            console.log({user:user,content:content});
+            //console.log("adding chat");
+            //console.log({user:user,content:content});
             setChatData(chatData => [...chatData,{user:user,content:content}]);
         }
     };
 
     const submitMessage = function(chatobj){
-        console.log(`emitting ${chatobj}`);
+        //console.log(`emitting ${chatobj}`);
         socket.emit("chat message",chatobj);
     }
 
     React.useEffect(()=>{
-        console.log("does this get run more than once");
+        //console.log("does this get run more than once");
         
         socket.on("chat message",(message)=>{
-            console.log("chat received");
+            //console.log("chat received");
             addChat(message);
         });
 
@@ -42,7 +42,7 @@ export default function Chat(props){
 
     React.useEffect(()=>{
 
-        console.log(chatData);
+        //console.log(chatData);
 
         setChats(
             chatData.map(({user,content},index)=>{
