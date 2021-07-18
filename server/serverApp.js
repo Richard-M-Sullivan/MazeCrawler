@@ -19,6 +19,14 @@ server.listen(`${port}`);
 
 io.on("connection",(socket)=>{
     console.log("socket connection established!");
+    socket.on('disconnect',()=>{
+        console.log('disconnected');
+    });
+
+    socket.on("chat message",(message) =>{
+        console.log(`${message.user,message.content}`);
+        io.emit("chat message",message);
+    })
 });
 
 app.get("/",(req,res)=>{

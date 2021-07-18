@@ -2,6 +2,8 @@ import React from 'react';
 
 import './css/App.css';
 
+import './services/socketService'
+
 import Description from './components/Description';
 import Chat from './components/Chat';
 import MoveController from './components/MoveController';

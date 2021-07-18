@@ -1,4 +1,5 @@
 import React from 'react';
+import socket from '../services/socketService';
 import ReactScrollableFeed from 'react-scrollable-feed';
 import SubmitBar from './SubmitBar';
 
@@ -6,23 +7,43 @@ import SubmitBar from './SubmitBar';
 export default function Chat(props){
 
     const [chatData,setChatData] = React.useState([
-        {user:"richard",content:"hello connor!"},
-        {user:"connor",content:"how goes it buddy? :^)"},
+        {user:"richard",content:"hello conner!"},
+        {user:"conner",content:"how goes it buddy? :^)"},
         {user:"richard",content:"it's going good"},
         {user:"david", content:"can I join in?"},
-        {user:"connor", content:"I don't see why not?"},
-        {user:"david",content:"jasldfjl askjdfa; slkfj ;aslkfj;las kjfd ;laskjf d;ldksajl fksjld dflkg jshl dfkjs ldjg"}
+        {user:"conner", content:"I don't see why not?"},
+        {user:"david",content:"askja sluff salk las kef laski d lugsail s skuld flog jbht pdfjs lbj"}
     ]);
     
     const [chats,setChats] = React.useState([]);
 
     const addChat = function ({user,content}) {
         if(content != null){
-            setChatData([...chatData,{user:user,content:content}])
+            console.log("adding chat");
+            console.log({user:user,content:content});
+            setChatData(chatData => [...chatData,{user:user,content:content}]);
         }
     };
 
+    const submitMessage = function(chatobj){
+        console.log(`emitting ${chatobj}`);
+        socket.emit("chat message",chatobj);
+    }
+
     React.useEffect(()=>{
+        console.log("does this get run more than once");
+        
+        socket.on("chat message",(message)=>{
+            console.log("chat received");
+            addChat(message);
+        });
+
+    },[]);
+
+    React.useEffect(()=>{
+
+        console.log(chatData);
+
         setChats(
             chatData.map(({user,content},index)=>{
                 return(
@@ -49,7 +70,7 @@ export default function Chat(props){
                 </div>
             </div>
             <br />
-            <SubmitBar className="hasBorder hasBackground smallHeight flexh" submitAction={addChat} name="chatSubmit"/>
+            <SubmitBar className="hasBorder hasBackground smallHeight flexh" submitAction={submitMessage} name="chatSubmit"/>
         </div>
     );
 }
