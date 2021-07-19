@@ -13,12 +13,12 @@ export default function Chat(props){
 
     // dummy data to add to the chatData
     const [chatData,setChatData] = React.useState([
-        {user:"richard",content:"hello conner!"},
+        /*{user:"richard",content:"hello conner!"},
         {user:"conner",content:"how goes it buddy? :^)"},
         {user:"richard",content:"it's going good"},
         {user:"david", content:"can I join in?"},
         {user:"conner", content:"I don't see why not?"},
-        {user:"david",content:"askja sluff salk las kef laski d lugsail s skuld flog jbht pdfjs lbj"}
+        {user:"david",content:"askja sluff salk las kef laski d lugsail s skuld flog jbht pdfjs lbj"}*/
     ]);
     
     // chats are the ui elements that get rendered. It starts off empty.
@@ -85,7 +85,7 @@ export default function Chat(props){
                 </div>
             </div>
             <br />
-            <SubmitBar className="hasBorder hasBackground smallHeight flexh" submitAction={submitMessage} name="chatSubmit"/>
+            <SubmitBar className="hasBorder hasBackground smallHeight flexh" submitAction={submitMessage} name="chatSubmit" user={props.user}/>
         </div>
     );
 }

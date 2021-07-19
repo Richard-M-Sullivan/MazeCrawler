@@ -14,16 +14,7 @@ export default function Description(props){
 
     // create dummy data to be displayed 
     const [descriptionData,setDescriptionData] = React.useState([
-        {content:`You wake up in a forest. All around you hear the rustling of trees, and up ahead you hear falling water.
-        You have a gash in your side and an empty canteen. What do you do, weary traveller?`},
-        {content:"go forward"},
-        {content:`You make your way out of the forest up to the base of a craggy cliffs face. It towers over you, and from it 
-        is the waterfall, which flows into a small pool of water. You look left. You look right. The cliffs face extends in 
-        both directions as far as you can see, but to the right the forest pulls away from the face to expose a small headstone.`},
-        {content:"go to the headstone and look around"},
-        {content:"You reach the headstone"},
-        {content:`Upon further inspection you find no name inscribed on its face. But there on top is a ceramic bowl of incense 
-        that is still burning. Suddenly you get the feeling as though you are being watched.`}
+        {content:`To login type in the command: "login", and follow the prompts. To create a new account type in the command: new user, and follow the prompts`}
     ]);
     
     // ui elements initially set to empty
@@ -40,7 +31,7 @@ export default function Description(props){
     // this sends a socket message to the server containing a message. this is passed to
     // the submit bar to be called after you type in and submit a command.
     const submitMessage = function(descriptionobj){
-        //console.log(`emitting ${descriptionobj}`);
+        //console.log(`emitting ${descriptionobj.user,descriptionobj.validated,descriptionobj.content}`);
         socket.emit("description message",descriptionobj);
     };
 
@@ -90,7 +81,9 @@ export default function Description(props){
                 </div>
             </div>
             <br />
-            <SubmitBar className="hasBorder hasBackground smallHeight flexh" submitAction={submitMessage} name="descriptionSubmit"/>
+            {/*the submit bar needs to be able to send user and validated to the server so that the responses can be handled
+             correctly, so those props are passed down to the submit bar */}
+            <SubmitBar className="hasBorder hasBackground smallHeight flexh" submitAction={submitMessage} name="descriptionSubmit" user={props.user} validated={props.validated}/>
         </div>
     );
 }
