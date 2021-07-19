@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 export default function SubmitBar(props){
-
-    let placeholder = "input text";
 
     const submitHandler = function (e){
 
@@ -14,12 +12,12 @@ export default function SubmitBar(props){
 
         e.preventDefault();
 
-    }
+    };
 
 
     return(
         <form className={props.className} onSubmit={submitHandler} name={props.name}>
-            <input className="width100 height100 inline noBackground noBorder bigFont noOutline" type="text" name="inputText" placeholder={placeholder} />
+            <input className="width100 height100 inline noBackground noBorder bigFont noOutline" type="text" name="inputText" placeholder="input text" />
             <input className="inline hasBackground noBorder hover noOutline" type="submit" value="send" />
         </form>
     );

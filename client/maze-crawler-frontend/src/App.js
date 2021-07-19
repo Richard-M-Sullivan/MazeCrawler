@@ -1,6 +1,5 @@
 import React from 'react';
 
-import './css/App.css';
 
 import './services/socketService'
 
@@ -12,6 +11,7 @@ import ItemDisplay from './components/ItemDisplay';
 
 function App() {
 
+  const [userName,setUserName] = React.useState(null);
 
   return (
     <div className="screen flexv flexWrap">
@@ -24,8 +24,8 @@ function App() {
         <ItemDisplay />
       </div>
 
-      <Description />
-      <Chat />
+      <Description userName={userName}/>
+      <Chat userName={userName}/>
 
     </div>
   );
