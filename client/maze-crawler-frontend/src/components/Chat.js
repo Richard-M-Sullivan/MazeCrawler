@@ -85,7 +85,7 @@ export default function Chat(props){
                 </div>
             </div>
             <br />
-            <SubmitBar className="hasBorder hasBackground smallHeight flexh" submitAction={submitMessage} name="chatSubmit" user={props.user}/>
+            <SubmitBar className="hasBorder hasBackground smallHeight flexh" submitAction={submitMessage} name="chatSubmit" user={props.user} validated={props.validated}/>
         </div>
     );
 }

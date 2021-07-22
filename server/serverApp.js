@@ -1,3 +1,16 @@
+const MongoClient = require("mongodb").MongoClient;
+const assert = require("assert");
+
+const url = "mongodb://127.0.0.1:27017/";
+
+MongoClient.connect(url,(err,client)=>{
+    assert.equal(null,err);
+    console.log("connected to the database");
+    const database = client.db("MazeCrawler");
+    database.collections((collections)=>{console.log(JSON.stringify(collections));
+    client.close()});
+});
+
 const Server = require("http"); //this will allow us to make a server object that can be used to make the socket connection and express stuff
 const express = require("express");// this will allow us to utilize express server api for handling requests
 const Socket = require("socket.io");// this allows us to utilize sockets
@@ -13,7 +26,8 @@ const server = Server.createServer(app);
 // needed to specify a cors header to allow taking in requests from another source
 const io = Socket(server,{
     cors: {
-    origin: "http://192.168.1.245:3000",
+    origin:"http://localhost:3000",
+    //origin: "http://192.168.1.245:3000",
     methods: ["GET", "POST"]
   }
 });
@@ -38,8 +52,18 @@ io.on("connection",(socket)=>{
 
     //this takes in a chat message and will relay that chat to everyone connected to the server
     socket.on("chat message",(message) =>{
-        //console.log(`${message.user,message.content}`);
-        io.emit("chat message",message);
+        //console.log(`${message.user},${message.content},${message.validated}`);
+
+        //if the user is logged in then the valid field will always be true. No other value can be guaranteed
+        //if the user is not logged in, so if the value of validated is not true then do not allow them the ability to chat.
+        if(message.validated !== true){
+            socket.emit("chat message", {user:"server",content:"you need to login to chat"});
+        }
+        // if the user is logged in, then allow them to emit a chat to the remainder of the people connected to the server
+        else{
+            io.emit("chat message",message);
+        }
+
     });
 
 
