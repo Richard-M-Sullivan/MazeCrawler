@@ -17,6 +17,8 @@ const Socket = require("socket.io");// this allows us to utilize sockets
 
 const port = 5000;//this is the port that we will be listening to
 
+let ban = "";
+
 //create an express object, which is the information needed to make a server.
 //after that make a server object as specified by our app obj
 const app = express();
@@ -27,6 +29,7 @@ const server = Server.createServer(app);
 const io = Socket(server,{
     cors: {
     origin:"http://localhost:3000",
+    //origin:"http://192.168.1.234:3000",
     //origin: "http://192.168.1.245:3000",
     methods: ["GET", "POST"]
   }
@@ -61,7 +64,9 @@ io.on("connection",(socket)=>{
         }
         // if the user is logged in, then allow them to emit a chat to the remainder of the people connected to the server
         else{
+
             io.emit("chat message",message);
+
         }
 
     });
@@ -77,6 +82,7 @@ io.on("connection",(socket)=>{
         // if the user is logged in they can submit commands
         if(message.validated === true){
             // send the message back to the user so they can print it to their screen
+
             socket.emit("description message",message);
 
             socket.emit("description message",{content:`the server has received your message ${message.user}.`});
