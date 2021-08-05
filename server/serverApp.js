@@ -3,12 +3,20 @@ const assert = require("assert");
 
 const url = "mongodb://127.0.0.1:27017/";
 
+
+// The code within the mongo client has been changed and it does not work
+//
+//  look into how to use the api better and then re assess the code
+//
+//  I have diagnosed that the database is running and working properly, but rather
+//  the code written is what is not working. So I just need to learn how to use
+//  the API properly
+
 MongoClient.connect(url,(err,client)=>{
     assert.equal(null,err);
     console.log("connected to the database");
     const database = client.db("MazeCrawler");
-    database.collections((collections)=>{console.log(JSON.stringify(collections));
-    client.close()});
+    database.userInfo.find({},(records)=>{console.log(records)});
 });
 
 const Server = require("http"); //this will allow us to make a server object that can be used to make the socket connection and express stuff
