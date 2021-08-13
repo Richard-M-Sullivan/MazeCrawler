@@ -17,14 +17,15 @@
 // parse commands. 
 
 class CommandParser{
+    //initialize the empty tree
     constructor(){
         this.root = {};
     }
-
+    //get the tree from the starting point
     getRoot(){
         return this.root;
     }
-
+    //this allows you to add commands to the tree in the format ("word",{commandType:commandName});
     addCommand(word,command){
         // initialize the current place in the dictionary as the root
         let curr = this.root;
@@ -47,6 +48,50 @@ class CommandParser{
         curr["*"] = command;
     }
 
+    //this will take in a string and will return a list of command tuples, that will have an [{action:"action", subject:"subject"}]
+    parseString(sentence){
+        // create containers to hold actions and subjects
+        let actions = [];
+        let subjects = [];
+        //split the sentence into words, and iterate through each word
+        sentence.split(" ").forEach(word=>{
+            console.log(word);
+            //for each word start at the base of the command tree
+            let curr = this.root;
+            let badWord = false;
+            //then split the word and iterate through each letter
+            word.split("").forEach(letter=>{
+                //if the command tree has the letter at that point, then go deeper into the tree
+                if(Object.prototype.hasOwnProperty.call(curr,letter)){
+                    curr = curr[letter];
+                }
+                //if we know it is not a word then do nothing
+                else if (badWord == true){
+
+                }
+                //if we discover that it is not a word set bad word flag to true
+                else{
+                    badWord = true;
+                    curr = {};
+                    console.log(`${word} not in tree`);
+                }
+            });
+            //if we make it to a command, then we need to add it to the lists
+            if(Object.prototype.hasOwnProperty.call(curr,"*")){
+                //console.log(curr["*"]);
+                curr = curr["*"];
+                if(Object.prototype.hasOwnProperty.call(curr,"action")){
+                    actions.push(curr);
+                }
+                else if(Object.prototype.hasOwnProperty.call(curr,"location")){
+                    subjects.push(curr);
+                }
+            }
+        });
+        console.log(actions);
+        console.log(subjects);
+
+    }
 
 }
 
@@ -59,8 +104,10 @@ function main(){
 
     commandList.forEach(command=>commandParser.addCommand(...command));
 
-    console.log(JSON.stringify(commandParser.getRoot()));
-    console.log(JSON.stringify(commandParser.getRoot(),null,2));
+    //console.log(JSON.stringify(commandParser.getRoot()));
+    //console.log(JSON.stringify(commandParser.getRoot(),null,2));
+
+    commandParser.parseString("i walk to the north then run to the east");
 }
 
 main();
