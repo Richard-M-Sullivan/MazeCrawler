@@ -2,6 +2,7 @@ import React from 'react';
 import socket from '../services/socketService';//grants access to the global socket obj to send and handle messages
 import ReactScrollableFeed from 'react-scrollable-feed';//is what allows me to make a scrollable message box.
 import SubmitBar from './SubmitBar';
+import Parser from '../services/commandParser';// this imports the command parser
 
 // The description component provides a window to display information pertaining to the game and contains a submit bar
 // that allows you to submit commands to the server for the purpose of getting back messages to be displayed in the display
@@ -24,15 +25,25 @@ export default function Description(props){
     const addDescription = function ({content}) {
         //console.log("adding description");
         if(content != null){
-            setDescriptionData(descriptionData=>[...descriptionData,{content:content}]);
+            setDescriptionData(descriptionData=>[...descriptionData,{content:JSON.stringify(content)}]);
         }
     };
 
     // this sends a socket message to the server containing a message. this is passed to
     // the submit bar to be called after you type in and submit a command.
     const submitMessage = function(descriptionobj){
-        //console.log(`emitting ${descriptionobj.user,descriptionobj.validated,descriptionobj.content}`);
-        socket.emit("description message",descriptionobj);
+        
+        if(descriptionobj.validated === true){
+            descriptionobj.content = Parser.parseString(descriptionobj.content);
+            console.log(descriptionobj);
+            socket.emit("description message", descriptionobj);
+        }
+        else{
+            console.log(descriptionobj);
+            socket.emit("description message",descriptionobj);
+
+        }
+
     };
 
     // this runs only once on the initial render

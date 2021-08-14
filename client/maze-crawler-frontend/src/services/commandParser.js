@@ -75,7 +75,7 @@ class CommandParser{
                     curr = curr[letter];
                 }
                 //if we know it is not a word then do nothing
-                else if (badWord == true){
+                else if (badWord === true){
 
                 }
                 //if we discover that it is not a word set bad word flag to true
@@ -123,13 +123,14 @@ class CommandParser{
             
         }
 
-        console.log(commands);
+        //console.log(commands);
+        return commands;
     }
 
 }
 
 function main(){
-    const commandParser = new CommandParser;
+    const commandParser = new CommandParser();
 
     console.log(commandParser.getRoot());
 
@@ -146,7 +147,7 @@ function main(){
 
     console.log(rootString);
 
-    const newCommandParser = new CommandParser;
+    const newCommandParser = new CommandParser();
 
     console.log(newCommandParser.getRoot());
 
@@ -156,4 +157,11 @@ function main(){
 
 }
 
-main();
+const rootString = '{"r":{"u":{"n":{"*":{"action":"MOVE"}}}},"w":{"a":{"l":{"k":{"*":{"action":"MOVE"}}}},"e":{"s":{"t":{"*":{"location":"WEST"}}}}},"n":{"o":{"r":{"t":{"h":{"*":{"location":"NORTH"}}}}}},"e":{"a":{"s":{"t":{"*":{"location":"EAST"}}}}},"s":{"o":{"u":{"t":{"h":{"*":{"location":"SOUTH"}}}}}}}';
+const parser = new CommandParser();
+
+parser.setRootFromString(rootString);
+
+//main(parser);
+
+export default parser;
