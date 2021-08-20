@@ -33,6 +33,8 @@ const server = Server.createServer(app);
 
 //pass the server to the socket function to start listening for socket connections
 // needed to specify a cors header to allow taking in requests from another source
+// ( note that the cors header specifies the "website" that you expect traffic from. Make sure that
+//   the http://computer:port <= port stays the same, but you do need to set "computer" to match the one in socketService.js )
 const io = Socket(server,{
     cors: {
     origin:"http://localhost:3000",
@@ -42,7 +44,7 @@ const io = Socket(server,{
   }
 });
 
-// have the server that socket and app are linked to start listening to incoming traffic
+// have the server, that socket and app are linked to, start listening to incoming traffic
 server.listen(`${port}`);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,7 +76,6 @@ io.on("connection",(socket)=>{
         }
         // if the user is logged in, then allow them to emit a chat to the remainder of the people connected to the server
         else{
-
             io.emit("chat message",message);
         }
     });
@@ -88,7 +89,6 @@ io.on("connection",(socket)=>{
         // if the user is logged in they can submit commands
         if(message.validated === true){
             // send the message back to the user so they can print it to their screen
-
             socket.emit("description message",message);
 
             socket.emit("description message",{content:`the server has received your message ${message.user}.`});
@@ -125,7 +125,7 @@ io.on("connection",(socket)=>{
                     socket.emit("set username",{state:message.content});
                     socket.emit("description message",{content:"enter your password"});
                 }
-                //if they need to ser their password
+                //if they need to set their password
                 else{
                     //if the username and password are correct, then validate the user and let them know they are logged in
                     //if the username and password are incorrect, then reset user info and lett them know to try again
@@ -174,33 +174,35 @@ io.on("connection",(socket)=>{
 
                         //a user of the specified name has been found in the database
                         if(await find.count() == 1){
+                            // let them try again
                             socket.emit("description message",{content:"this username already exists. try again..."});
                         }
+                        // if user not found in database, then username is unique.
                         else{
+                            // have the user set their username field and prompt for a password
                             socket.emit("set username",{state:message.content});
                             socket.emit("description message",{content:"enter your password"});
                         }
-
-
                     })();
                 }
                 //if they need to set their password
                 else{
+                    // take the pass word, and validate the user
                     socket.emit("set validated",{state:true});
                     socket.emit("description message",{content:"you are now logged in"});
 
+                    // save the username and password to the database so the user can login later
                     mongo.db("MazeCrawler").collection("userInfo").insertOne({userName:message.user,userPassword:message.content});
 
                 } 
             }
+            // if the states of user and validated are in a combination not accounted for then return an error
             else{
+                // send error to the user
                 socket.emit("description message",{content:"an error occurred please restart the browser and try again"});
             }
         }
     });
-
-
-
 });
 
 

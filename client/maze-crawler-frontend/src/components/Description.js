@@ -5,8 +5,8 @@ import SubmitBar from './SubmitBar';
 import Parser from '../services/commandParser';// this imports the command parser
 
 // The description component provides a window to display information pertaining to the game and contains a submit bar
-// that allows you to submit commands to the server for the purpose of getting back messages to be displayed in the display
-// pertaining to the game.
+// that allows you to submit commands to the server for the purpose of getting back messages describing the results of
+// the users commands
 
 // This works by having the submit bar send a description message event to the server through sockets. Then the server handles
 // the event and will send back a description message event to the client. This is handled by displaying the message in the
@@ -30,7 +30,7 @@ export default function Description(props){
     };
 
     // this sends a socket message to the server containing a message. this is passed to
-    // the submit bar to be called after you type in and submit a command.
+    // the submit bar to be called when you type in and submit a command.
     const submitMessage = function(descriptionobj){
         
         if(descriptionobj.validated === true){
@@ -49,7 +49,6 @@ export default function Description(props){
     // this runs only once on the initial render
     // it sets up the socket message listener
     React.useEffect(()=>{
-        //console.log("does this get run more than once");
         
         // this listens for a message event of type description message from the server, and when
         // it is activated it calls add description and hands to it the data that it needs to append a message to displayData

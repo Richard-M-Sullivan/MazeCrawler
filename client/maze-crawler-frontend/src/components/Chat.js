@@ -41,9 +41,8 @@ export default function Chat(props){
 
     // this runs on the first render and it specifies how to handle incoming chat events from the server
     React.useEffect(()=>{
-        //console.log("does this get run more than once");
         
-        // create a chat event listener that will call add chat and pass on the chat message from the server
+        // create a chat event listener that will call addChat and pass on the chat message from the server
         socket.on("chat message",(message)=>{
             //console.log("chat received");
             addChat(message);

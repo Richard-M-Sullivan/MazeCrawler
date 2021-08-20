@@ -13,7 +13,7 @@ import ItemDisplay from './components/ItemDisplay';
 // with other users, submit bars for submitting input to the two mentioned windows. It provides an item list to
 // show current items that the user has, as well as room and compass icons that help the user navigate the world.
 
-// it does this by creating the respective components and passing the user and validated states to the chat and description
+// it does this by creating the respective components and passing the user (username) and validated (logged in) states to the chat and description
 // components so that the user can login and track their information
 
 function App() {
@@ -31,7 +31,7 @@ function App() {
       setUser(message.state);
     });
 
-    // if you ger told to set validated flag, then set validated to the state specified in the message
+    // if you get told to set validated flag, then set validated to the state specified in the message
     socket.on("set validated",(message)=>{
       setValidated(message.state);
     });

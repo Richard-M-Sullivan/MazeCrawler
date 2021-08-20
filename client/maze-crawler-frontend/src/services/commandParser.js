@@ -3,11 +3,13 @@
 // tree of commands. To check if it is loaded or not you will need to call the loaded function.
 
 // To load the tree you have to use the load command. This will require you to add a file, and the result will
-// be that the data-structure is built and saved for use.
+// be that the data-structure is built and saved on the client side for use.
 
 // Once the tree is loaded you can use the parse command function. This will take in a command and will return an
-// dictionary of [{action:"action", noun:"noun"},{action:"action",noun:"noun"} ...]; this could be an array that is
-// one item long or any number of items long. if there are no things to be returned, then it will return null.
+// array of commands => [command,command,command,...].
+// commands look like this => a list containing two objects: the action, and the thing the action is done on =>
+// [{action:"action", noun:"noun"},{action:"action",noun:"noun"}].
+// the array of commands could range in length from 0 to an arbitrary size
 
 // the way that the parser will work is that it will have a queue for actions. An action is essentially a command like
 // move, take, drop, look... etc. It will have a queue for nouns. A noun is the thing that is passed to the command
@@ -31,6 +33,7 @@ class CommandParser{
         return JSON.stringify(this.root);
     }
 
+    // this saves a provided tree in the data structure and sets the root to the base.
     setRootFromString(rootString){
         this.root = JSON.parse(rootString);
     }
@@ -55,10 +58,12 @@ class CommandParser{
             }
         });        
         
+        // after the word is added, add a marker that lets the parser know that this is a command
+        // then set the marker to map to the specified command.
         curr["*"] = command;
     }
 
-    //this will take in a string and will return a list of command tuples, that will have an [{action:"action", subject:"subject"}]
+    // this will take in a string and will return a list of command tuples, that will have an [{action:"action", subject:"subject"}]
     parseString(sentence){
         // create containers to hold actions and subjects
         let keyWords = [];
@@ -67,7 +72,13 @@ class CommandParser{
             console.log(word);
             //for each word start at the base of the command tree
             let curr = this.root;
+
+            // this is a flag that lets me know if the word that we are looking for is actually in the tree or not
+            // (this is because the forEach() construct does not allow you to break, so this flag will let me know that
+            // we no longer need to check things, but just iterate through the rest of the word doing nothing. - why did
+            // I use forEach? because it is cool functional javascript voodoo magic. Cool points out weigh a loss in performance ;) )
             let badWord = false;
+
             //then split the word and iterate through each letter
             word.split("").forEach(letter=>{
                 //if the command tree has the letter at that point, then go deeper into the tree
@@ -98,23 +109,30 @@ class CommandParser{
             }
         });
 
+        // at this point all the keywords are in the list together, but the actions need to be paired with nouns to be a full command
+
+        //create a list to hold commands and create two variables to hold an action and a subject
         let commands = [];
         let action = null;
         let subject = null;
 
+        //iterate through the list of keywords
         for (let index = 0; index < keyWords.length; index++) {
             const element = keyWords[index];
 
-
-
             console.log(element);
 
+            //for each element sort and place them in their respective container
+            // (when you put in an action you need to know what the subject is before you add the action and location pair
+            // to the command list, so dont add to the command list when an action is added)
             if(Object.prototype.hasOwnProperty.call(element,"action")){
                 action = element;
             }
+            //if something other than an action is added, then you can add the action subject pair to the command list
             else{
                 subject = element;
                 
+                //but only if you have already encountered an action for the subject to be attached to 
                 if(action !== null && subject !== null){
                     commands.push([action,subject]);
                     
@@ -129,6 +147,8 @@ class CommandParser{
 
 }
 
+// this is just for testing. Be careful messing with this because it can have an effect on the applications that the parser is a part of
+// as long as you don't call the function in this file then you should be good when running an application that imports the parser.
 function main(){
     const commandParser = new CommandParser();
 
@@ -139,7 +159,7 @@ function main(){
     commandList.forEach(command=>commandParser.addCommand(...command));
 
     console.log(JSON.stringify(commandParser.getRoot()));
-    //console.log(JSON.stringify(commandParser.getRoot(),null,2));
+    console.log(JSON.stringify(commandParser.getRoot(),null,2));
 
     commandParser.parseString("i walk to the north the east and south then i run walk run to the east");
 
@@ -157,10 +177,17 @@ function main(){
 
 }
 
+// here we are setting some default values for testing the parser.
+// eventually this will be added to the database and loaded by the client when they start the application
+
+// this is a string that represents the command tree. and then we make a parser to put it in
 const rootString = '{"r":{"u":{"n":{"*":{"action":"MOVE"}}}},"w":{"a":{"l":{"k":{"*":{"action":"MOVE"}}}},"e":{"s":{"t":{"*":{"location":"WEST"}}}}},"n":{"o":{"r":{"t":{"h":{"*":{"location":"NORTH"}}}}}},"e":{"a":{"s":{"t":{"*":{"location":"EAST"}}}}},"s":{"o":{"u":{"t":{"h":{"*":{"location":"SOUTH"}}}}}}}';
 const parser = new CommandParser();
 
+// create the parser from the root string
 parser.setRootFromString(rootString);
+
+// make sure this is commented out when not testing or it will run when you run the project
 
 //main(parser);
 
